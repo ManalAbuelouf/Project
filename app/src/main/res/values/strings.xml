@@ -5,4 +5,16 @@
     <string name="nav_close">Close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password">Password</string>
+    <string name="chose_a_password">Chose A Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_your_password">Confirm Your Password</string>
+    <string name="choose_your_favorite_continent">Choose Your Favorite Continent</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="first_name">First Name</string>
+    <string name="enter_your_first_name">Enter Your First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="enter_your_last_name">Enter Your Last Name</string>
 </resources>
