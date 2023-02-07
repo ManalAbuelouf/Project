@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class Signup extends AppCompatActivity {
 
@@ -56,25 +58,69 @@ public class Signup extends AppCompatActivity {
         SignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Users newUser =new Users();
-                if(EmailEditText.getText().toString().isEmpty()) newUser.setEmail("No Email");
-                else newUser.setEmail(EmailEditText.getText().toString());
-                if(FirstEditText.getText().toString().isEmpty()) newUser.setFName("No Name");
-                else newUser.setFName(FirstEditText.getText().toString());
-                if(LastEditText.getText().toString().isEmpty()) newUser.setLName("No Last Name");
-                else newUser.setLName(LastEditText.getText().toString());
-                if(PasswordEditText.getText().toString().isEmpty()) newUser.setPassword("No Password");
-                else{
-                    newUser.setPassword(PasswordEditText.getText().toString());
+                Users newUser = new Users();
+         int i=0;
+                    if (!EmailEditText.getText().toString().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(EmailEditText.getText().toString()).matches()) {
+                        newUser.setEmail(EmailEditText.getText().toString());
+
+//                    Toast.makeText(this, "Email Verified !", Toast.LENGTH_SHORT).show();
+                    } else {
+                i=1;
+                        EmailEditText.setError("Please Enter A Valid Email");
+                        EmailEditText.requestFocus();
+                    }
+
+//                    if (EmailEditText.getText().toString().isEmpty()) newUser.setEmail("No Email");
+//                    else newUser.setEmail(EmailEditText.getText().toString());
+                    if (FirstEditText.getText().toString().isEmpty()){
+                        FirstEditText.setError("Please Enter Your First Name");
+                        FirstEditText.requestFocus();
+                        i=1;
+
+                    }
+                    else{
+
+                        newUser.setFName(FirstEditText.getText().toString());
+                    }
+                    if (LastEditText.getText().toString().isEmpty()){
+                        LastEditText.setError("Please Enter Your First Name");
+                        LastEditText.requestFocus();
+                        i=1;
+
+                    }
+
+                    else{
+
+                        newUser.setLName(LastEditText.getText().toString());
+                    }
+                    if (PasswordEditText.getText().toString().isEmpty()){
+                   i=1;
+                        PasswordEditText.setError("Please Enter Your First Name");
+                        PasswordEditText.requestFocus();
+                    }
+
+                    else {
+                        if (ConfirmPasswordEditText.getText().toString().matches(PasswordEditText.getText().toString())) {
+                            newUser.setPassword(PasswordEditText.getText().toString());
+
+                        }
+                        else{
+                            i=1;
+                            ConfirmPasswordEditText.setError("Password is not matched!");
+                            ConfirmPasswordEditText.requestFocus();
+                        }
+                    }
+
+                if(i!=1) {
+                    newUser.setPContinent(ContinentSpinner.getSelectedItem().toString());
+                    //Users.usersArrayList.add(newUser);
+                    DataBaseHelper dataBaseHelper = new
+                            DataBaseHelper(Signup.this, "NAME", null, 1);
+                    dataBaseHelper.insertUser(newUser);
+                    Intent intent = new Intent(Signup.this, MainActivity.class);
+                    Signup.this.startActivity(intent);
+                    finish();
                 }
-                newUser.setPContinent(ContinentSpinner.getSelectedItem().toString());
-                //Users.usersArrayList.add(newUser);
-                DataBaseHelper dataBaseHelper =new
-                        DataBaseHelper(Signup.this,"NAME",null,1);
-                dataBaseHelper.insertUser(newUser);
-                Intent intent=new Intent(Signup.this,MainActivity.class);
-                Signup.this.startActivity(intent);
-                finish();
             }
         });
     }
