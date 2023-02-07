@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import java.nio.charset.StandardCharsets;
 
 public class DataBaseHelper  extends SQLiteOpenHelper {
 
@@ -18,8 +21,9 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("CREATE TABLE DESTINATION(city TEXT PRIMARY KEY,country TEXT,continent TEXT,longitude DOUBLE,latitude DOUBLE,cost INTEGER,img TEXT,description TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE USERS(Email TEXT PRIMARY KEY,Password TEXT, FirstName TEXT,LastName TEXT,Fcontinent TEXT)");
-        sqLiteDatabase.execSQL("CREATE TABLE DESTINATION(city TEXT PRIMARY KEY,country TEXT,continent TEXT,longitude REAL,latitude REAL,cost INTEGER,img TEXT,description TEXT)");
+
     }
 
     @Override
@@ -52,4 +56,28 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
         return sqLiteDatabase.rawQuery("SELECT * FROM  USERS WHERE Email=?",new String[]{email},null);
     }
-}
+    public void insertDestinations(Destination destination){
+
+            SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+            ContentValues ContentValues = new ContentValues();
+            ContentValues.put("city", destination.getCity());
+            ContentValues.put("country", destination.getCountry());
+            ContentValues.put("continent", destination.getContinent());
+            ContentValues.put(" longitude", destination.getLongitude());
+            ContentValues.put(" latitude", destination.getLatitude());
+            ContentValues.put("cost", destination.getCost());
+            ContentValues.put("img", destination.getImage());
+            ContentValues.put("description", destination.getDescription());
+
+            sqLiteDatabase.insert("DESTINATION", null, ContentValues);
+        }
+
+
+
+    public Cursor All() {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        return sqLiteDatabase.rawQuery("SELECT continent,country, city FROM  DESTINATION ",null);
+    }
+    }
+

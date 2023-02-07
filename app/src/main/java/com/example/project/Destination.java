@@ -1,6 +1,7 @@
 package com.example.project;
-
+import java.util.ArrayList;
 public class Destination {
+    public static ArrayList<Destination> destinationsArrayList=new ArrayList<Destination>();
 
     private String city;
     private String country;
@@ -11,7 +12,8 @@ public class Destination {
     private String image;
     private String description;
 
-
+    public Destination() {
+    }
     public Destination(String city, String country, String continent, double longitude, double latitude, int cost, String image, String description) {
         this.city = city;
         this.country = country;
@@ -23,8 +25,8 @@ public class Destination {
         this.description = description;
     }
 
-    public Destination() {
-    }
+
+
 
     public String getCity() {
         return city;

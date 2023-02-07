@@ -8,6 +8,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,9 +35,10 @@ public class MainActivity2 extends AppCompatActivity  {
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public NavigationView navigationView;
     private RequestQueue RequestQueue;
-    private List<Destination> Destinations = new ArrayList<>();
+    public List<Destination> Destinations = new ArrayList<>();
     final HomeFragment homeFragment = new HomeFragment();
     String homeData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,15 @@ public class MainActivity2 extends AppCompatActivity  {
         // to toggle the button
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
+
+
+//        DataBaseHelper dataBaseHelper = new
+//                DataBaseHelper(MainActivity2.this, "NAME", null, 1);
+//        for(int i=0;i<Destinations.size();i++) {
+//
+//            dataBaseHelper.insertDestinations(Destinations.get(i));
+//        }
 
         // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -112,6 +125,7 @@ public class MainActivity2 extends AppCompatActivity  {
 
     private void fetchJsonResponse() {
 
+
         JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, "https://run.mocky.io/v3/d1a9c002-6e88-4d1e-9f39-930615876bca", (String) null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -119,7 +133,11 @@ public class MainActivity2 extends AppCompatActivity  {
                 for (int i = 0; i < response.length(); i++) {
                     // creating a new json object and
                     // getting each object from our json array.
+                    DataBaseHelper dataBaseHelper = new
+                            DataBaseHelper(MainActivity2.this, "NAME1", null, 1);
+                    Destination newDest= new Destination();
                     try {
+
                         // we are getting each json object.
                         JSONObject responseObj = response.getJSONObject(i);
                         // now we get our response from API in json object format.
@@ -134,6 +152,19 @@ public class MainActivity2 extends AppCompatActivity  {
                         int destCost = responseObj.getInt("cost");
                         String destImageURL = responseObj.getString("img");
                         String destDescription = responseObj.getString("description");
+
+                        //mahmouds point of view:
+                        newDest.setCity(destCity);
+                        newDest.setCountry(destCountry);
+                        newDest.setContinent(destContinent);
+                        newDest.setLongitude(destLongitude);
+                        newDest.setLatitude(destLatitude);
+                        newDest.setCost(destCost);
+                        newDest.setImage(destImageURL);
+                        newDest.setDescription(destDescription);
+
+                        dataBaseHelper.insertDestinations(newDest);
+
                         Destinations.add(new Destination(destCity, destCountry, destContinent, destLongitude , destLatitude , destCost , destImageURL , destDescription));
 
                     } catch (JSONException e) {
