@@ -1,16 +1,23 @@
 package com.example.project;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    private Boolean saveLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +27,17 @@ public class MainActivity extends AppCompatActivity {
         EditText password = (EditText) findViewById(R.id.editTextTextPassword);
         Button SignUpButton = (Button) findViewById(R.id.signUpbutton);
         Button LoginButton = (Button) findViewById(R.id.loginbutton);
-//        CheckBox rememberMe = (CheckBox) findViewById(R.id.checkBox);
+        CheckBox rememberMe= (CheckBox) findViewById(R.id.checkBox) ;
         TextView test = (TextView) findViewById(R.id.textView);
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginPrefsEditor = loginPreferences.edit();
+
+        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        if (saveLogin == true) {
+            email.setText(loginPreferences.getString("email", ""));
+            password.setText(loginPreferences.getString("password", ""));
+            rememberMe.setChecked(true);
+        }
         SignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,6 +50,20 @@ public class MainActivity extends AppCompatActivity {
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(email.getWindowToken(), 0);
+
+                if (rememberMe.isChecked()) {
+                    loginPrefsEditor.putBoolean("saveLogin", true);
+                    loginPrefsEditor.putString("email", email.getText().toString());
+                    loginPrefsEditor.putString("password", password.getText().toString());
+                    loginPrefsEditor.commit();
+                } else {
+                    loginPrefsEditor.clear();
+                    loginPrefsEditor.commit();
+                }
+
+
 
                 DataBaseHelper dataBaseHelper =new
                         DataBaseHelper(MainActivity.this,"NAME",null,1);
