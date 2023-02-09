@@ -78,12 +78,30 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     public Cursor All() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
-        return sqLiteDatabase.rawQuery("SELECT city , country FROM DESTINATION GROUP BY continent",null);
+        return sqLiteDatabase.rawQuery("SELECT DISTINCT city , country,continent FROM DESTINATION ORDER BY continent",null);
     }
 
     public Cursor getAllDestinations() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM DESTINATION", null);
+    }
+    public Cursor favoriteC(String email) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+    return sqLiteDatabase.rawQuery("SELECT Fcontinent FROM  USERS WHERE Email=?", new String[]{email}, null);
+
+    }
+    public String favorite(String cont){
+        StringBuffer  favoriteData = new StringBuffer(500);
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor= sqLiteDatabase.rawQuery("SELECT city, country FROM  DESTINATION WHERE continent=?", new String[]{cont}, null);
+        while (cursor.moveToNext()){
+            favoriteData.append(cursor.getString(0));
+            favoriteData.append("\t");
+            favoriteData.append(cursor.getString(1));
+            favoriteData.append("\n");
+
+        }
+        return favoriteData.toString();
     }
     }
 

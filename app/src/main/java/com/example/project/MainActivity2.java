@@ -44,6 +44,8 @@ public class MainActivity2 extends AppCompatActivity  {
     final HomeFragment homeFragment = new HomeFragment();
     String homeData;
     StringBuffer allData = new StringBuffer(500);
+    StringBuffer  favoriteData = new StringBuffer(500);
+
     DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity2.this, "NAME1", null, 1);
     Bundle bundle = new Bundle();
 
@@ -112,6 +114,15 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.favorite:
+
+                        String email ="mahmoud@gmail.com";
+                        Cursor cursor = dataBaseHelper.favoriteC("mahmoud@gmail.com");
+                        cursor.moveToFirst();
+                        Log.d("conttttttttt", cursor.getString(1));
+//                           favoriteData.append(dataBaseHelper.favorite( cont));
+                        Log.d("favoriteData", favoriteData.toString());
+//                        bundle.putString("messageAll", allData.toString());
+//                        allFragment.setArguments(bundle);
                         replaceFragment(favoriteFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
