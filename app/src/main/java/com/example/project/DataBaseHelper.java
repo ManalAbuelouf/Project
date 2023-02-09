@@ -21,7 +21,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE DESTINATION(city TEXT PRIMARY KEY,country TEXT,continent TEXT,longitude DOUBLE,latitude DOUBLE,cost INTEGER,img TEXT,description TEXT)");
+        sqLiteDatabase.execSQL("CREATE TABLE DESTINATION(id INTEGER PRIMARY KEY AUTOINCREMENT, city TEXT,country TEXT,continent TEXT,longitude DOUBLE,latitude DOUBLE,cost INTEGER,img TEXT,description TEXT)");
         sqLiteDatabase.execSQL("CREATE TABLE USERS(Email TEXT PRIMARY KEY,Password TEXT, FirstName TEXT,LastName TEXT,Fcontinent TEXT)");
 
     }
@@ -53,9 +53,10 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     }
     public Cursor searchUser(String email) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-
         return sqLiteDatabase.rawQuery("SELECT * FROM  USERS WHERE Email=?",new String[]{email},null);
     }
+
+
     public void insertDestinations(Destination destination){
 
             SQLiteDatabase sqLiteDatabase = getWritableDatabase();
@@ -77,7 +78,12 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     public Cursor All() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
-        return sqLiteDatabase.rawQuery("SELECT continent,country, city FROM  DESTINATION ",null);
+        return sqLiteDatabase.rawQuery("SELECT city , country FROM DESTINATION GROUP BY continent",null);
+    }
+
+    public Cursor getAllDestinations() {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT * FROM DESTINATION", null);
     }
     }
 

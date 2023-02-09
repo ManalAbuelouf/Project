@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
@@ -26,8 +27,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class MainActivity2 extends AppCompatActivity  {
 
@@ -38,6 +43,9 @@ public class MainActivity2 extends AppCompatActivity  {
     public List<Destination> Destinations = new ArrayList<>();
     final HomeFragment homeFragment = new HomeFragment();
     String homeData;
+    StringBuffer allData = new StringBuffer(500);
+    DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity2.this, "NAME1", null, 1);
+    Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +89,6 @@ public class MainActivity2 extends AppCompatActivity  {
                         Random rn = new Random();
                         int rand = rn.nextInt(Destinations.size());
                         homeData = (Destinations.get(rand)).toString();
-                        Log.d("data", homeData);
-                        Bundle bundle = new Bundle();
                         bundle.putString("message", homeData );
                         homeFragment.setArguments(bundle);
                         replaceFragment(homeFragment);
@@ -90,6 +96,17 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.all:
+                        Cursor test = dataBaseHelper.getAllDestinations();
+                        Cursor allDestinations = dataBaseHelper.All();
+                        while (allDestinations.moveToNext()){
+                           allData.append(allDestinations.getString(0));
+                           allData.append("\t");
+                           allData.append(allDestinations.getString(1));
+                           allData.append("\n");
+                        }
+                        Log.d("allData", allData.toString());
+                        bundle.putString("messageAll", allData.toString());
+                        allFragment.setArguments(bundle);
                         replaceFragment(allFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
@@ -100,6 +117,11 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.sorted:
+                        Collections.sort(Destinations, Comparator.comparing(Destination::getCost));
+                        for(Destination DEST : Destinations) {
+                            Log.d("sorted",DEST.toString());
+                        }
+
                         replaceFragment(sortedFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
@@ -110,7 +132,8 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.logout:
-                        replaceFragment(logoutFragment);
+                        Intent intent=new Intent(MainActivity2.this,MainActivity.class);
+                        MainActivity2.this.startActivity(intent);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                 }
@@ -133,8 +156,6 @@ public class MainActivity2 extends AppCompatActivity  {
                 for (int i = 0; i < response.length(); i++) {
                     // creating a new json object and
                     // getting each object from our json array.
-                    DataBaseHelper dataBaseHelper = new
-                            DataBaseHelper(MainActivity2.this, "NAME1", null, 1);
                     Destination newDest= new Destination();
                     try {
 
@@ -162,10 +183,8 @@ public class MainActivity2 extends AppCompatActivity  {
                         newDest.setCost(destCost);
                         newDest.setImage(destImageURL);
                         newDest.setDescription(destDescription);
-
                         dataBaseHelper.insertDestinations(newDest);
-
-                        Destinations.add(new Destination(destCity, destCountry, destContinent, destLongitude , destLatitude , destCost , destImageURL , destDescription));
+                        Destinations.add(newDest);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

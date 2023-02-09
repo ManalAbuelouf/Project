@@ -61,8 +61,12 @@ public class AllFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        Bundle bundle = this.getArguments();
+        String myValue = bundle.getString("messageAll");
         View rootView = inflater.inflate(R.layout.fragment_all, container, false);
+        TextView textView = (TextView)rootView.findViewById(R.id.all);
+        textView.setText(myValue);
+        // Inflate the layout for this fragment
         return rootView;
     }
 }

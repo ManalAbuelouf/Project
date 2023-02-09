@@ -8,12 +8,11 @@
 
     <TextView
         android:id="@+id/all"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="130dp"
         android:gravity="center"
-        android:text="This Is All Fragment"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="40dp" />
 
 </FrameLayout>

@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
                         DataBaseHelper(MainActivity.this,"NAME",null,1);
                 Cursor searchUser = dataBaseHelper.searchUser(email.getText().toString());
                 if(searchUser.moveToFirst()){
-//               searchUser.moveToFirst();
-//                test.setText(searchUser.getString(0));
                     if(!searchUser.getString(1).matches(password.getText().toString())){
                         //Password does not match user email
                         password.setError("Password is incorrect Please try again!");
@@ -81,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.startActivity(intent);
                     }
                 }
-//               if(dataBaseHelper.searchUser(String.valueOf(email))!=null){
-//
-//               }
+
             }
 
 

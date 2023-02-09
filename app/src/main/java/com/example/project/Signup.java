@@ -20,27 +20,11 @@ public class Signup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        //        setContentView(R.layout.activity_signup);
-//        String[] options_Continents = { "Asia", "Africa","Europe","North America","South America" };
-//        final Spinner ContinentSpinner = (Spinner)
-//                findViewById(R.id.spinnercontinents);
-//        ArrayAdapter<String> objContinentArr = new
-//                ArrayAdapter(this,android.R.layout.simple_spinner_item, options_Continents);
-//
-//        ContinentSpinner.setAdapter(objContinentArr);
-//        objContinentArr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        ContinentSpinner.setAdapter(objContinentArr);
-
-
-
-
-
         String[] options = { "Asia", "Africa","Europe","North America","South America" };
         Spinner ContinentSpinner =(Spinner)
                 findViewById(R.id.spinnercontinents);
         ArrayAdapter<String> objGenderArr = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, options);
         ContinentSpinner.setAdapter(objGenderArr);
-
 
 
         EditText EmailEditText =
