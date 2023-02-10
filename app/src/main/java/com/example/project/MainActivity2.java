@@ -44,6 +44,7 @@ public class MainActivity2 extends AppCompatActivity  {
     final HomeFragment homeFragment = new HomeFragment();
     String homeData;
     StringBuffer allData = new StringBuffer(500);
+    StringBuffer userData = new StringBuffer(500);
     StringBuffer  favoriteData = new StringBuffer(500);
     StringBuffer ascendingData = new StringBuffer(500);
     StringBuffer descendingData = new StringBuffer(500);
@@ -106,6 +107,8 @@ public class MainActivity2 extends AppCompatActivity  {
                            allData.append(allDestinations.getString(1));
                            allData.append("\n");
                         }
+                        allDestinations.close();
+                        Log.d("allData", allData.toString());
                         bundle.putString("messageAll", allData.toString());
                         allFragment.setArguments(bundle);
                         replaceFragment(allFragment);
@@ -150,6 +153,40 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.profile:
+                        String email = getIntent().getStringExtra("email");
+                        String password = getIntent().getStringExtra("password");
+                        String Fname = getIntent().getStringExtra("Fname");
+                        String Lname = getIntent().getStringExtra("Lname");
+                        String continent = getIntent().getStringExtra("continent");
+                        userData.append(email);
+                        userData.append("\n");
+                        userData.append(password);
+                        userData.append("\n");
+                        userData.append(Fname);
+                        userData.append("\n");
+                        userData.append(Lname);
+                        userData.append("\n");
+                        userData.append(continent);
+                        userData.append("\n");
+                        Log.d("yesss",userData.toString());
+//                        String userInfo= dataBaseHelper.profile(email);
+//                            userData.append(userInfo.getEmail());
+//                            userData.append("\n");
+//                            userData.append(userInfo.getPassword());
+//                            userData.append("\n");
+//                            userData.append(userInfo.getFName());
+//                        userData.append("\n");
+//                        userData.append(userInfo.getLName());
+//                        userData.append("\n");
+//                        userData.append(userInfo.getPContinent());
+//                            userData.append("\n");
+//                            userData.append(userInfo.getString(3));
+//                            userData.append("\n");
+//                            userData.append(userInfo.getString(4));
+
+//                        Log.d("userData", userInfo);
+                        bundle.putString("messageProfile", userData.toString());
+                        profileFragment.setArguments(bundle);
                         replaceFragment(profileFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;

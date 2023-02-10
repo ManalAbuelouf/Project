@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -94,13 +95,14 @@ public class Signup extends AppCompatActivity {
                             ConfirmPasswordEditText.requestFocus();
                         }
                     }
-
+                newUser.setPContinent(ContinentSpinner.getSelectedItem().toString());
                 if(i!=1) {
-                    newUser.setPContinent(ContinentSpinner.getSelectedItem().toString());
+
                     //Users.usersArrayList.add(newUser);
                     DataBaseHelper dataBaseHelper = new
                             DataBaseHelper(Signup.this, "NAME", null, 1);
                     dataBaseHelper.insertUser(newUser);
+                    Log.d("user",newUser.toString());
                     Intent intent = new Intent(Signup.this, MainActivity.class);
                     Signup.this.startActivity(intent);
                     finish();

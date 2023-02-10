@@ -19,6 +19,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE DESTINATION(id INTEGER PRIMARY KEY AUTOINCREMENT, city TEXT,country TEXT,continent TEXT,longitude DOUBLE,latitude DOUBLE,cost INTEGER,img TEXT,description TEXT)");
@@ -55,6 +56,19 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM  USERS WHERE Email=?",new String[]{email},null);
     }
+//    public String profile(String email){
+//        Users user= new Users();
+//        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+//        Cursor cursor=sqLiteDatabase.rawQuery("SELECT * FROM  USERS WHERE Email=?",new String[]{email},null);
+//
+//    user.setEmail(cursor.getString(0));
+//    user.setPassword(cursor.getString(1));
+//    user.setFName(cursor.getString(2));
+//    user.setLName(cursor.getString(3));
+//    user.setPContinent(cursor.getString(4));
+//
+//        return user.getEmail();
+//    }
 
 
     public void insertDestinations(Destination destination){
@@ -78,7 +92,7 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
     public Cursor All() {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
 
-        return sqLiteDatabase.rawQuery("SELECT city , country FROM DESTINATION GROUP BY continent",null);
+        return sqLiteDatabase.rawQuery("SELECT DISTINCT city , country,continent FROM DESTINATION ORDER BY continent",null);
     }
 
     public Cursor getAllDestinations() {
@@ -88,13 +102,27 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     public Cursor getAscending(){
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        return sqLiteDatabase.rawQuery("SELECT city , country FROM DESTINATION ORDER BY cost", null);
+        return sqLiteDatabase.rawQuery("SELECT DISTINCT city , country,cost FROM DESTINATION ORDER BY cost", null);
     }
 
     public Cursor getDescending(){
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        return sqLiteDatabase.rawQuery("SELECT city , country FROM DESTINATION ORDER BY cost DESC", null);
+        return sqLiteDatabase.rawQuery("SELECT DISTINCT city , country,cost FROM DESTINATION ORDER BY cost DESC", null);
 
     }
+
+    public void updateRecord(String email,String password,String Lname,String Fname) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+//        contentValues.put("Email", email);
+        contentValues.put("Password", password);
+        contentValues.put("FirstName", Fname);
+        contentValues.put("LastName",Lname);
+
+        db.update("USERS", contentValues, "Email = ?", new String[]{email});
+        db.close();
     }
+}
+
 
