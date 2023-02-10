@@ -7,9 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.net.SocketTimeoutException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,12 +68,49 @@ public class SortedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = this.getArguments();
+        String ascendingValue = bundle.getString("messageAscending");
+        String descendingValue = bundle.getString("messageDescending");
         View rootView = inflater.inflate(R.layout.fragment_sorted, container, false);
         String[] options = { "Ascending", "Descending" };
-
-        Spinner ContinentSpinner =(Spinner)rootView.findViewById(R.id.spinner_sort);
+        Spinner SortingSpinner = rootView.findViewById(R.id.spinner_sort);
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, options);
-        ContinentSpinner.setAdapter(adapter);
-        return inflater.inflate(R.layout.fragment_sorted, container, false);
+        SortingSpinner.setAdapter(adapter);
+        LinearLayout linearLayout=(LinearLayout) rootView.findViewById(R.id.linear);
+        SortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String opt = SortingSpinner.getSelectedItem().toString();
+                if (opt == "Ascending"){
+                    linearLayout.removeAllViews();
+                    TextView textView1 = new TextView(getActivity());
+                    textView1.setText(ascendingValue);
+                    textView1.setTextSize(20);
+                    textView1.setTextColor(-1);
+                    linearLayout.addView(textView1);
+                    imageView.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.translate));
+                }
+
+                else if (opt == "Descending"){
+                    linearLayout.removeAllViews();
+                    TextView textView2 = new TextView(getActivity());
+                    textView2.setText(descendingValue);
+                    textView2.setTextSize(20);
+                    textView2.setTextColor(-1);
+                    linearLayout.addView(textView2);
+                    imageView.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.translate2));
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        return rootView;
     }
 }

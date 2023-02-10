@@ -85,5 +85,16 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         return sqLiteDatabase.rawQuery("SELECT * FROM DESTINATION", null);
     }
+
+    public Cursor getAscending(){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT city , country FROM DESTINATION ORDER BY cost", null);
+    }
+
+    public Cursor getDescending(){
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        return sqLiteDatabase.rawQuery("SELECT city , country FROM DESTINATION ORDER BY cost DESC", null);
+
+    }
     }
 
