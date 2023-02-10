@@ -58,7 +58,6 @@ public class MainActivity2 extends AppCompatActivity  {
         final FavoriteFragment favoriteFragment = new FavoriteFragment();
         final SortedFragment sortedFragment = new SortedFragment();
         final ProfileFragment profileFragment = new ProfileFragment();
-        final LogoutFragment logoutFragment = new LogoutFragment();
         RequestQueue = Volley.newRequestQueue(this);
         fetchJsonResponse();
         // drawer layout instance to toggle the menu icon to open

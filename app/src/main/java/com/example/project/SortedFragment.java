@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -71,6 +72,8 @@ public class SortedFragment extends Fragment {
         Bundle bundle = this.getArguments();
         String ascendingValue = bundle.getString("messageAscending");
         String descendingValue = bundle.getString("messageDescending");
+        String[] ascendingLines = ascendingValue.split("[\r\n]+");
+        String[] descendingLines = descendingValue.split("[\r\n]+");
         View rootView = inflater.inflate(R.layout.fragment_sorted, container, false);
         String[] options = { "Ascending", "Descending" };
         Spinner SortingSpinner = rootView.findViewById(R.id.spinner_sort);
@@ -85,21 +88,42 @@ public class SortedFragment extends Fragment {
                 String opt = SortingSpinner.getSelectedItem().toString();
                 if (opt == "Ascending"){
                     linearLayout.removeAllViews();
-                    TextView textView1 = new TextView(getActivity());
-                    textView1.setText(ascendingValue);
-                    textView1.setTextSize(20);
-                    textView1.setTextColor(-1);
-                    linearLayout.addView(textView1);
+                    for (int j = 0 ; j<ascendingLines.length ; j++){
+                        TextView textView1 = new TextView(getActivity());
+                        textView1.setText(ascendingLines[j]);
+                        textView1.setTextSize(20);
+                        textView1.setTextColor(-1);
+                        textView1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(getActivity(),DestinationActivity.class);
+                                intent.putExtra("key",textView1.getText().toString());
+                                startActivity(intent);
+                            }
+                        });
+                        linearLayout.addView(textView1);
+                    }
+
                     imageView.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.translate));
                 }
 
                 else if (opt == "Descending"){
                     linearLayout.removeAllViews();
-                    TextView textView2 = new TextView(getActivity());
-                    textView2.setText(descendingValue);
-                    textView2.setTextSize(20);
-                    textView2.setTextColor(-1);
-                    linearLayout.addView(textView2);
+                    for (int j = 0 ; j<ascendingLines.length ; j++) {
+                        TextView textView2 = new TextView(getActivity());
+                        textView2.setText(descendingLines[j]);
+                        textView2.setTextSize(20);
+                        textView2.setTextColor(-1);
+                        textView2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(getActivity(),DestinationActivity.class);
+                                intent.putExtra("key",textView2.getText().toString());
+                                startActivity(intent);
+                            }
+                        });
+                        linearLayout.addView(textView2);
+                    }
                     imageView.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.translate2));
                 }
 
