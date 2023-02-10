@@ -45,7 +45,8 @@ public class MainActivity2 extends AppCompatActivity  {
     String homeData;
     StringBuffer allData = new StringBuffer(500);
     StringBuffer  favoriteData = new StringBuffer(500);
-
+    StringBuffer ascendingData = new StringBuffer(500);
+    StringBuffer descendingData = new StringBuffer(500);
     DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity2.this, "NAME1", null, 1);
     Bundle bundle = new Bundle();
 
@@ -98,7 +99,6 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.all:
-                        Cursor test = dataBaseHelper.getAllDestinations();
                         Cursor allDestinations = dataBaseHelper.All();
                         while (allDestinations.moveToNext()){
                            allData.append(allDestinations.getString(0));
@@ -106,7 +106,6 @@ public class MainActivity2 extends AppCompatActivity  {
                            allData.append(allDestinations.getString(1));
                            allData.append("\n");
                         }
-                        Log.d("allData", allData.toString());
                         bundle.putString("messageAll", allData.toString());
                         allFragment.setArguments(bundle);
                         replaceFragment(allFragment);
@@ -115,24 +114,37 @@ public class MainActivity2 extends AppCompatActivity  {
 
                     case R.id.favorite:
 
-                        String email ="mahmoud@gmail.com";
+                        /*String email ="mahmoud@gmail.com";
                         Cursor cursor = dataBaseHelper.favoriteC("mahmoud@gmail.com");
                         cursor.moveToFirst();
                         Log.d("conttttttttt", cursor.getString(1));
 //                           favoriteData.append(dataBaseHelper.favorite( cont));
                         Log.d("favoriteData", favoriteData.toString());
 //                        bundle.putString("messageAll", allData.toString());
-//                        allFragment.setArguments(bundle);
+//                        allFragment.setArguments(bundle);*/
                         replaceFragment(favoriteFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.sorted:
-                        Collections.sort(Destinations, Comparator.comparing(Destination::getCost));
-                        for(Destination DEST : Destinations) {
-                            Log.d("sorted",DEST.toString());
+                        Cursor ascending = dataBaseHelper.getAscending();
+                        Cursor descending = dataBaseHelper.getDescending();
+                        while (ascending.moveToNext()){
+                            ascendingData.append(ascending.getString(0));
+                            ascendingData.append("\t");
+                            ascendingData.append(ascending.getString(1));
+                            ascendingData.append("\n");
                         }
 
+                        while (descending.moveToNext()){
+                            descendingData.append(descending.getString(0));
+                            descendingData.append("\t");
+                            descendingData.append(descending.getString(1));
+                            descendingData.append("\n");
+                        }
+                        bundle.putString("messageAscending", ascendingData.toString());
+                        bundle.putString("messageDescending", descendingData.toString());
+                        sortedFragment.setArguments(bundle);
                         replaceFragment(sortedFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
