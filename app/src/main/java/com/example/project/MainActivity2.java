@@ -168,22 +168,6 @@ public class MainActivity2 extends AppCompatActivity  {
                         userData.append(continent);
                         userData.append("\n");
                         Log.d("yesss",userData.toString());
-//                        String userInfo= dataBaseHelper.profile(email);
-//                            userData.append(userInfo.getEmail());
-//                            userData.append("\n");
-//                            userData.append(userInfo.getPassword());
-//                            userData.append("\n");
-//                            userData.append(userInfo.getFName());
-//                        userData.append("\n");
-//                        userData.append(userInfo.getLName());
-//                        userData.append("\n");
-//                        userData.append(userInfo.getPContinent());
-//                            userData.append("\n");
-//                            userData.append(userInfo.getString(3));
-//                            userData.append("\n");
-//                            userData.append(userInfo.getString(4));
-
-//                        Log.d("userData", userInfo);
                         bundle.putString("messageProfile", userData.toString());
                         profileFragment.setArguments(bundle);
                         replaceFragment(profileFragment);

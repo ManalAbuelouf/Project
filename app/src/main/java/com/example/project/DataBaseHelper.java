@@ -111,15 +111,12 @@ public class DataBaseHelper  extends SQLiteOpenHelper {
 
     }
 
-    public void updateRecord(String email,String password,String Lname,String Fname) {
+    public void updateRecord(String email,String password,String Fname,String Lname) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues contentValues = new ContentValues();
-//        contentValues.put("Email", email);
         contentValues.put("Password", password);
         contentValues.put("FirstName", Fname);
         contentValues.put("LastName",Lname);
-
         db.update("USERS", contentValues, "Email = ?", new String[]{email});
         db.close();
     }
