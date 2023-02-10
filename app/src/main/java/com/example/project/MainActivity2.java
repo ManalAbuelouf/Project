@@ -44,8 +44,7 @@ public class MainActivity2 extends AppCompatActivity  {
     final HomeFragment homeFragment = new HomeFragment();
     String homeData;
     StringBuffer allData = new StringBuffer(500);
-    StringBuffer ascendingData = new StringBuffer(500);
-    StringBuffer descendingData = new StringBuffer(500);
+    StringBuffer  favoriteData = new StringBuffer(500);
 
     DataBaseHelper dataBaseHelper = new DataBaseHelper(MainActivity2.this, "NAME1", null, 1);
     Bundle bundle = new Bundle();
@@ -99,6 +98,7 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.all:
+                        Cursor test = dataBaseHelper.getAllDestinations();
                         Cursor allDestinations = dataBaseHelper.All();
                         while (allDestinations.moveToNext()){
                            allData.append(allDestinations.getString(0));
@@ -114,33 +114,25 @@ public class MainActivity2 extends AppCompatActivity  {
                         break;
 
                     case R.id.favorite:
+
+                        String email ="mahmoud@gmail.com";
+                        Cursor cursor = dataBaseHelper.favoriteC("mahmoud@gmail.com");
+                        cursor.moveToFirst();
+                        Log.d("conttttttttt", cursor.getString(1));
+//                           favoriteData.append(dataBaseHelper.favorite( cont));
+                        Log.d("favoriteData", favoriteData.toString());
+//                        bundle.putString("messageAll", allData.toString());
+//                        allFragment.setArguments(bundle);
                         replaceFragment(favoriteFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
 
                     case R.id.sorted:
-                        Cursor ascending = dataBaseHelper.getAscending();
-                        while (ascending.moveToNext()){
-                            ascendingData.append(ascending.getString(0));
-                            ascendingData.append("\t");
-                            ascendingData.append(ascending.getString(1));
-                            ascendingData.append("\n");
+                        Collections.sort(Destinations, Comparator.comparing(Destination::getCost));
+                        for(Destination DEST : Destinations) {
+                            Log.d("sorted",DEST.toString());
                         }
 
-                        Cursor descending = dataBaseHelper.getDescending();
-                        while (descending.moveToNext()){
-                            descendingData.append(descending.getString(0));
-                            descendingData.append("\t");
-                            descendingData.append(descending.getString(1));
-                            descendingData.append("\n");
-                        }
-                        Log.d("ascending", ascendingData.toString());
-                        Log.d("descending", descendingData.toString());
-
-                        bundle.putString("messageAscending", ascendingData.toString());
-                        bundle.putString("messageDescending", descendingData.toString());
-
-                        sortedFragment.setArguments(bundle);
                         replaceFragment(sortedFragment);
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
