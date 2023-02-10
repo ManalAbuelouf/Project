@@ -1,5 +1,7 @@
 package com.example.project;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +63,30 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle = this.getArguments();
+        String profileValue = bundle.getString("messageProfile");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        String[] lines = profileValue.split("\n");
+        EditText textView1 = (EditText) rootView.findViewById(R.id.profileEmail);
+        EditText textView2 = (EditText) rootView.findViewById(R.id.profilePassword);
+        EditText textView3 = (EditText) rootView.findViewById(R.id.profileFname);
+        EditText textView4 = (EditText) rootView.findViewById(R.id.profileLname);
+//        for (String line : lines) {
+//
+//            layout.addView(textView);
+//        }
+        textView1.setText(lines[0]);
+        textView2.setText(lines[1]);
+        textView3.setText(lines[2]);
+        textView4.setText(lines[3]);
+
+
+//        textView1.setText(profileValue);
+        // Inflate the layout for this fragment
+        return rootView;
     }
 }

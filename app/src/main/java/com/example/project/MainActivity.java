@@ -76,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else  {
                         Intent intent=new Intent(MainActivity.this,MainActivity2.class);
+                        intent.putExtra("email", email.getText().toString());
+                        intent.putExtra("password",password.getText().toString());
+                        intent.putExtra("Fname",searchUser.getString(2));
+                        intent.putExtra("Lname",searchUser.getString(3));
+                        intent.putExtra("continent",searchUser.getString(4));
                         MainActivity.this.startActivity(intent);
                     }
                 }
