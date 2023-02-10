@@ -1,5 +1,8 @@
 package com.example.project;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +10,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +68,12 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image, container, false);
+        Bundle bundle = this.getArguments();
+        String url = bundle.getString("url");
+        View rootView = inflater.inflate(R.layout.fragment_image, container, false);
+        new DownloadImageTask((ImageView) rootView.findViewById(R.id.imageView1)).execute(url);
+        return rootView;
     }
+
 }
+

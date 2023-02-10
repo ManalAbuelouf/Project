@@ -20,10 +20,16 @@ public class DestinationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final DescriptionFragment descriptionFragment = new DescriptionFragment();
+        final ImageFragment imageFragment = new ImageFragment();
+        final LocationFragment locationFragment = new LocationFragment();
         Bundle bundle = new Bundle();
+        Bundle imageBundle = new Bundle();
+        Bundle locationBundle = new Bundle();
         value = getIntent().getStringExtra("key");
         TextView countryTextView = (TextView) findViewById(R.id.nameTextView);
         Button description = (Button) findViewById(R.id.descriptionButton);
+        Button image = (Button) findViewById(R.id.imageButton);
+
         DataBaseHelper dataBaseHelper = new DataBaseHelper(DestinationActivity.this, "NAME1", null, 1);
         Cursor allDestinations = dataBaseHelper.getAllDestinations();
         while (allDestinations.moveToNext()){
@@ -32,6 +38,10 @@ public class DestinationActivity extends AppCompatActivity {
                 countryTextView.setText(allDestinations.getString(1));
                 bundle.putString("description", allDestinations.getString(8) );
                 descriptionFragment.setArguments(bundle);
+                imageBundle.putString("url" , allDestinations.getString(7));
+                imageFragment.setArguments(imageBundle);
+
+
             }
         }
 
@@ -40,7 +50,18 @@ public class DestinationActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(imageFragment);
                 fragmentTransaction.add(R.id.root_layout, descriptionFragment, "DescFrag");
+                fragmentTransaction.commit();
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(descriptionFragment);
+                fragmentTransaction.add(R.id.root_layout, imageFragment, "ImgFrag");
                 fragmentTransaction.commit();
             }
         });
